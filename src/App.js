@@ -1,23 +1,19 @@
-import logo from './logo.svg';
+import Navbar from './components/Navbar';
+import userScreen from './components/userScreen';
+import ChatScreenCard from './components/ChatScreenCard'
+
 import './App.css';
+import UserScreen from './components/userScreen';
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Navbar/>
+      <div className='d-flex'>
+        <UserScreen/>
+        <ChatScreenCard/>
+      </div>
+      
     </div>
   );
 }
