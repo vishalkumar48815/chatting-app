@@ -1,22 +1,25 @@
+import axios from 'axios';
 import React from 'react'
 import { useEffect, useState } from "react";
 import { useParams } from 'react-router-dom';
 
 
 
+export const API_URL = `http://127.0.0.1:8000/`
 export default function ChatScreenCard() {
   let { id } = useParams()
 
   const [userChats, setUserChats] = useState([]);
-  const [message,setMessage] = useState("")
+  const [message, setMessage] = useState("")
 
   const fetchData = async () => {
-    return fetch(`http://127.0.0.1:8000/get-conversation/?sender=1&receiver=${id}`)
-      .then((response) => response.json())
-      .then((data) => {
-        setUserChats(data)
-      });
-    // console.log(data), 
+    try {
+      let data = await axios.get(`${API_URL}get-conversation?sender=1&receiver=${id}`)
+      setUserChats(data?.data)
+    } catch (error) {
+      
+    }
+ 
   }
 
 
@@ -27,20 +30,18 @@ export default function ChatScreenCard() {
 
 
 
-  const handleSubmit = () => {
-    console.log(message)
-    console.log(id)
-    
-    
-    fetch('http://127.0.0.1:8000/save-message', {
-      method: 'post',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-             "message": message,
-             "sender": 1,
-             "receiver": id,
-         })
-    })
+  const handleSubmit = async () => {
+    try {
+      let res =  await axios.post(`${API_URL}save-message`, {
+        message: message,
+        sender: 1,
+        receiver: id,
+      })
+    } catch (error) {
+      
+    }
+   
+
   }
 
   return (
@@ -79,9 +80,10 @@ export default function ChatScreenCard() {
           <footer style={{ width: '100%', position: 'absolute', bottom: '0' }}>
             <div className='row m-auto' style={{ width: '98%' }}>
               <div className='col'>
-                <input type="text" className="form-control" id="messageBox" onChange={(event)=>{setMessage(event.target.value)}} placeholder="Type Here" />
+                <input type="text" className="form-control" id="messageBox" onChange={(event) => { setMessage(event.target.value) }} placeholder="Type Here" />
               </div>
-
+            <form>
+            </form>
               <div className=' text-center' style={{ width: 'fit-content' }} >
                 <button onClick={handleSubmit} style={{ border: '1px solid grey' }} className="btn"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-send-fill" viewBox="0 0 16 16">
                   <path d="M15.964.686a.5.5 0 0 0-.65-.65L.767 5.855H.766l-.452.18a.5.5 0 0 0-.082.887l.41.26.001.002 4.995 3.178 3.178 4.995.002.002.26.41a.5.5 0 0 0 .886-.083l6-15Zm-1.833 1.89L6.637 10.07l-.215-.338a.5.5 0 0 0-.154-.154l-.338-.215 7.494-7.494 1.178-.471-.47 1.178Z" />

@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 export default function () {
     const [user, setUser] = useState([]);
     const fetchData = async () => {
-        return fetch('http://127.0.0.1:8000/get-all-users/')
+        return fetch('http://127.0.0.1:8000/get-all-users')
             .then((response) => response.json())
             .then((data) => {
                 // console.log(data)
